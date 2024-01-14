@@ -90,15 +90,14 @@
 
   ;; (package-refresh-contents)
   ;; (defvar jf/emacs-packages
-  ;;   '(f
+  ;;   '(diminish
+  ;;     f
   ;;     vertico
   ;;     marginalia
   ;;     evil
   ;;     evil-collection
-  ;;     diminish
   ;;     general
   ;;     vterm
-  ;;     ;; org
   ;;     org-contrib 
   ;;     yasnippet
   ;;     pdf-tools
