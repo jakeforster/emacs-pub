@@ -1,0 +1,10 @@
+* emacs-pub
+
+** Installing external (system) dependencies
+
+*** OpenBSD
+
+#+begin_src sh
+doas xargs pkg_add < openbsd-pkg-list.txt
+#+end_src
+
