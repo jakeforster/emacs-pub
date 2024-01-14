@@ -1,0 +1,24 @@
+# -*- mode: snippet -*-
+# name: Threeparttable Environment
+# key: threeparttab
+# group: LaTeX
+# --
+\usepackage{threeparttable}
+\usepackage{booktabs}
+\begin{table}
+\caption{\label{}}
+\begin{center}
+\begin{threeparttable}
+\begin{tabular}{lp{\linewidth}}
+\toprule
+colname & colname\tnote{a}\\[0pt]
+\midrule
+& \\[0pt]
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\item [a] 
+\end{tablenotes}
+\end{threeparttable}
+\end{center}
+\end{table}

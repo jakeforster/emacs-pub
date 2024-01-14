@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: Table Environment
+# key: tab
+# group: LaTeX
+# --
+\usepackage{booktabs}
+\begin{table}
+\caption{\label{}}
+\begin{center}
+{\normalsize
+\begin{tabular}{lp{\linewidth}}
+\toprule
+colname & colname\\[0pt]
+\midrule
+&\\[0pt]
+\bottomrule
+\end{tabular}}
+\end{center}
+\end{table}
