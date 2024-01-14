@@ -1,0 +1,10 @@
+emacs--gtk3
+ghostscript--a4-gtk
+texlive_base
+texlive_texmf-full
+latexmk
+py3-black
+py3-packaging
+pylint3
+cmake
+gmake
