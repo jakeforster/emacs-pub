@@ -8,3 +8,10 @@
 doas xargs pkg_add < openbsd-pkg-list.txt
 #+end_src
 
+** GNU Guix 
+
+The Emacs packages as well as the external dependencies can be installed using the GNU Guix package manager: 
+
+#+begin_src sh
+guix package -m guix-manifest.scm
+#+end_src
