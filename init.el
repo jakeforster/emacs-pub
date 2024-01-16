@@ -103,9 +103,7 @@
   ;;     pdf-tools
   ;;     magit
   ;;     python-black
-  ;;     flycheck
-  ;;     numpydoc
-  ;;     ))
+  ;;     flycheck))
   ;; (when (eq system-type 'berkeley-unix)
   ;;   (setq jf/emacs-packages (remove 'pdf-tools jf/emacs-packages)))
   ;; (when (eq system-type 'windows-nt)
