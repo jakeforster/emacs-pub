@@ -474,8 +474,3 @@
 
   (add-hook 'eglot-managed-mode-hook 'jf/python-toggle-flycheck-with-eglot)
   (advice-add 'eglot-shutdown :after 'jf/python-toggle-flycheck-with-eglot))
-
-(use-package numpydoc
-  :config
-  (setq numpydoc-insertion-style nil
-	numpydoc-insert-examples-block nil))

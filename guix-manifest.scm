@@ -12,13 +12,11 @@
 			    "emacs-evil"
 			    "emacs-evil-collection"
 			    "emacs-general"
-			    "emacs-org"
 			    "emacs-vterm"
 			    "emacs-magit"
 			    "emacs-pdf-tools"
 			    "emacs-org-contrib"
 			    "emacs-yasnippet"
-			    "emacs-numpydoc"
 			    "emacs-python-black"
 			    "emacs-flycheck"
 
