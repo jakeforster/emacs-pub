@@ -249,6 +249,8 @@
 ;; shell
 ;; (because vterm doesn't work on windows)
 (when (eq system-type 'windows-nt)
+  (add-hook 'shell-mode-hook (lambda () (display-line-numbers-mode 0)))
+
   (jf/leader-keys
     ;; override jf/vterm
     "ot" '(jf/shell :which-key "shell"))
