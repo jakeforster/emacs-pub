@@ -1,10 +1,7 @@
 (defun jf/latex-mode-setup ()
-  (add-hook 'before-save-hook 'jf/latex-before-save-hook nil t)
+  (add-hook 'before-save-hook #'jf/indent-buffer nil t)
   (flyspell-buffer)
   (flyspell-mode))
-
-(defun jf/latex-before-save-hook ()
-  (indent-region (point-min) (point-max)))
 
 (defun jf/latex-compile ()
   "Compile the LaTeX file using Latexmk.

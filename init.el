@@ -226,7 +226,8 @@
   (jf/leader-keys
     "i" '(:ignore t :which-key "indent...")
     "ii" '(indent-region :which-key "indent-region")
-    "il" '(indent-rigidly :which-key "indent-rigidly")))
+    "il" '(indent-rigidly :which-key "indent-rigidly")
+    "ib" '(jf/indent-buffer :which-key "indent buffer")))
 
 (defun jf/toggle-line-numbers-type ()
   "Toggle between absolute and relative line numbers."
@@ -235,6 +236,10 @@
       (setq display-line-numbers-type t)
     (setq display-line-numbers-type 'relative))
   (global-display-line-numbers-mode))
+
+(defun jf/indent-buffer ()
+  (interactive)
+  (indent-region (point-min) (point-max)))
 
 (defun jf/messages-buffer ()
   "Switch to the *Messages* buffer."
