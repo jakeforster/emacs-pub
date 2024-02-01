@@ -27,7 +27,7 @@
            "Consolas"))
         (t nil)))
 
-(set-face-attribute 'default nil :font jf/font)
+(add-to-list 'default-frame-alist `(font . ,(concat jf/font "-13")))
 
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-increase)
@@ -220,8 +220,7 @@
     "oce" '(jf/open-emacs-config-file :which-key "emacs config"))
 
   (jf/leader-keys
-    "-" '(comment-region :which-key "comment-region")
-    "=" '(uncomment-region :which-key "uncomment-region"))
+    "-" '(jf/comment-dwim :which-key "jf/comment-dwim"))
 
   (jf/leader-keys
     "i" '(:ignore t :which-key "indent...")
@@ -236,6 +235,14 @@
       (setq display-line-numbers-type t)
     (setq display-line-numbers-type 'relative))
   (global-display-line-numbers-mode))
+
+(defun jf/comment-dwim (arg)
+  "Call `comment-dwim` normally, or with `extra-line` comment-style when called with a prefix argument."
+  (interactive "P")
+  (if arg
+      (let ((comment-style 'extra-line))
+        (comment-dwim nil))
+    (comment-dwim nil)))
 
 (defun jf/indent-buffer ()
   (interactive)
@@ -384,8 +391,8 @@
 (use-package yasnippet
   :config
   (yas-reload-all)
-  (add-hook 'latex-mode-hook #'yas-minor-mode)
-  (add-hook 'python-mode-hook #'yas-minor-mode)
+  (dolist (hook '(latex-mode-hook python-mode-hook org-mode-hook))
+    (add-hook hook 'yas-minor-mode))
   (add-hook 'snippet-mode-hook (lambda () (setq-local require-final-newline nil))))
 
 (unless (eq system-type 'berkeley-unix)
