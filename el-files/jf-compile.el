@@ -1,5 +1,5 @@
 (defun jf/compilation-cleanup (buffer msg)
-  "Display a success message and close the *compilation* buffer when LaTeX compilation completes."
+  "Close the *compilation* buffer when compilation does not return an error code."
   (when (eq buffer (get-buffer "*compilation*"))
     (kill-buffer "*compilation*")))
 
@@ -12,5 +12,11 @@
         (set-process-query-on-exit-flag (get-buffer-process compilation-buffer) nil)
         (kill-process (get-buffer-process compilation-buffer)))
       (kill-buffer compilation-buffer))))
+
+(defun jf/toggle-compilation-cleanup ()
+  (interactive)
+  (if (memq 'jf/compilation-cleanup compilation-finish-functions)
+      (remove-hook 'compilation-finish-functions 'jf/compilation-cleanup)
+    (add-to-list 'compilation-finish-functions 'jf/compilation-cleanup)))
 
 (provide 'jf-compile)

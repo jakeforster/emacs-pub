@@ -370,12 +370,14 @@
 
 ;; nicer compilation with M-x compile
 ;; show compilation buffer in same window
-;; and kill it on success
+;; and auto kill it unless compilation throws an error
 (use-package jf-compile
   :config
   (add-to-list 'display-buffer-alist
 	       '("^\\*compilation\\*" . ((display-buffer-same-window))))
-  (add-to-list 'compilation-finish-functions 'jf/compilation-cleanup)
+  (add-to-list 'compilation-finish-functions 'jf/compilation-cleanup) ;; toggle with jf/toggle-compilation-cleanup
+
+  (setq compilation-scroll-output t)
 
   ;; use when compilation fails
   (evil-collection-define-key 'normal 'compilation-mode-map
