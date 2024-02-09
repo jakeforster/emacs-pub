@@ -11,6 +11,7 @@
 (setq native-comp-async-report-warnings-errors 'silent)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq help-window-select t)
+(setq Man-notify-method 'aggressive)
 (setq-default indent-tabs-mode nil)
 
 (setq backup-directory-alist `(("." . ,(expand-file-name "tmp/backups/" user-emacs-directory))))
@@ -368,27 +369,40 @@
     :config
     (ox-extras-activate '(ignore-headlines))))
 
-;; nicer compilation with M-x compile
+;; nicer compilation with M-x jf/compile
 ;; show compilation buffer in same window
 ;; and auto kill it unless compilation throws an error
 (use-package jf-compile
   :config
   (add-to-list 'display-buffer-alist
 	       '("^\\*compilation\\*" . ((display-buffer-same-window))))
-  (add-to-list 'compilation-finish-functions 'jf/compilation-cleanup) ;; toggle with jf/toggle-compilation-cleanup
 
-  (setq compilation-scroll-output t)
+  (jf/toggle-compilation-cleanup)
 
-  ;; use when compilation fails
+  (dolist (map '(latex-mode-map
+                 c-mode-base-map))
+    (evil-collection-define-key 'normal map
+      (kbd "SPC m") #'jf/compile))
+
   (evil-collection-define-key 'normal 'compilation-mode-map
-    (kbd "SPC k") 'jf/kill-compilation-buffer))
+    (kbd "SPC k") #'jf/kill-compilation-buffer)
+
+  (setq compilation-scroll-output t))
 
 (cl-assert (executable-find "latexmk"))
 (use-package jf-latex
   :hook (latex-mode . jf/latex-mode-setup)
   :config
-  (evil-collection-define-key 'normal 'latex-mode-map
-    (kbd "SPC m") 'jf/latex-compile))
+  (defun jf/latex-mode-setup ()
+    (add-hook 'before-save-hook #'jf/indent-buffer nil t)
+    (flyspell-buffer)
+    (flyspell-mode))
+
+  (defun jf/set-latex-compile-command ()
+    (when (derived-mode-p 'latex-mode)
+      (setq-local compile-command (jf/latex-generate-command))))
+
+  (add-hook 'hack-local-variables-hook 'jf/set-latex-compile-command))
 
 (use-package yasnippet
   :config
