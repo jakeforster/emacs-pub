@@ -135,6 +135,7 @@
   :config
   (evil-set-undo-system 'undo-redo)
   (setq evil-insert-state-cursor nil)
+  (setq evil-kill-on-visual-paste nil)
   (evil-mode))
 
 (use-package evil-collection
@@ -397,10 +398,6 @@
     (add-hook 'before-save-hook #'jf/indent-buffer nil t)
     (flyspell-buffer)
     (flyspell-mode))
-
-  (defun jf/set-latex-compile-command ()
-    (when (derived-mode-p 'latex-mode)
-      (setq-local compile-command (jf/latex-generate-command))))
 
   (add-hook 'hack-local-variables-hook 'jf/set-latex-compile-command))
 
