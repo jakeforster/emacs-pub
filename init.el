@@ -227,8 +227,8 @@
   (jf/leader-keys
     "i" '(:ignore t :which-key "indent...")
     "ii" '(indent-region :which-key "indent-region")
-    "il" '(indent-rigidly :which-key "indent-rigidly")
-    "ib" '(jf/indent-buffer :which-key "indent buffer")))
+    "il" '(jf/indent-rigidly-l :which-key "indent-rigidly")
+    "ih" '(jf/indent-rigidly-h :which-key "indent-rigidly")))
 
 (defun jf/toggle-line-numbers-type ()
   "Toggle between absolute and relative line numbers."
@@ -249,6 +249,16 @@
 (defun jf/indent-buffer ()
   (interactive)
   (indent-region (point-min) (point-max)))
+
+(defun jf/indent-rigidly-l ()
+  (interactive)
+  (call-interactively 'indent-rigidly)
+  (command-execute (kbd "l")))
+
+(defun jf/indent-rigidly-h ()
+  (interactive)
+  (call-interactively 'indent-rigidly)
+  (command-execute (kbd "h")))
 
 (defun jf/messages-buffer ()
   "Switch to the *Messages* buffer."
@@ -339,14 +349,14 @@
     (kbd "SPC e") 'org-babel-execute-src-block
     (kbd "SPC k") 'org-babel-remove-result
     (kbd "SPC m") 'org-export-dispatch)
+    (kbd "SPC '") 'org-edit-special
 
   (setq org-log-done 'time
         org-confirm-babel-evaluate nil
         org-startup-folded 'content
 	org-M-RET-may-split-line '((default . nil))
-
-        ;; org-latex-preview use SVG for nice scaling
-	org-preview-latex-default-process 'dvisvgm)
+	org-preview-latex-default-process 'dvisvgm ;; org-latex-preview use SVG for nice scaling
+        org-list-allow-alphabetical t)
 
   (add-to-list 'display-buffer-alist
 	       '("^\\*Org-Babel Error Output\\*" . ((display-buffer-same-window))))
@@ -358,9 +368,16 @@
      (latex . t)
      (sqlite . t)))
 
-  (when (eq system-type 'berkeley-unix)
     (setq org-latex-pdf-process
-          '("latexmk -f -pdf -interaction=nonstopmode -output-directory=%o %f"))))
+        (if (eq system-type 'berkeley-unix)
+            '("latexmk -f -pdf -interaction=nonstopmode -shell-escape -output-directory=%o %f")
+          '("latexmk -f -pdf -%latex -interaction=nonstopmode -shell-escape -output-directory=%o %f")))
+
+  (evil-collection-define-key 'normal 'org-src-mode-map
+    (kbd "<return>") 'org-edit-src-exit)
+
+  ;; for org-src-mode-map to register the above keybinding
+  (add-hook 'org-src-mode-hook (lambda () (evil-normal-state))))
 
 ;; org-contrib
 (use-package ox
@@ -381,7 +398,8 @@
   (jf/toggle-compilation-cleanup)
 
   (dolist (map '(latex-mode-map
-                 c-mode-base-map))
+                 c-mode-base-map
+                 python-mode-map))
     (evil-collection-define-key 'normal map
       (kbd "SPC m") #'jf/compile))
 
@@ -398,6 +416,8 @@
     (add-hook 'before-save-hook #'jf/indent-buffer nil t)
     (flyspell-buffer)
     (flyspell-mode))
+
+  (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode))
 
   (add-hook 'hack-local-variables-hook 'jf/set-latex-compile-command))
 

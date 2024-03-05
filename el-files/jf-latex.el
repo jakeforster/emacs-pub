@@ -12,8 +12,8 @@ For example, add the following at the end of your LaTeX file to set a master fil
          (filename (or master-filename (buffer-file-name))))
     (when filename
       (if (eq system-type 'windows-nt)
-          (format "latexmk -pdf %s && latexmk -c" (shell-quote-argument filename))
-        (format "latexmk -pdf %s && ! grep -i 'undefined references' %s.log && latexmk -c"
+          (format "latexmk -pdf -shell-escape %s && latexmk -c" (shell-quote-argument filename))
+        (format "latexmk -pdf -shell-escape %s && ! grep -i 'undefined references' %s.log && latexmk -c"
                 (shell-quote-argument filename)
                 (shell-quote-argument (file-name-sans-extension filename)))))))
 
