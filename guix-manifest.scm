@@ -2,6 +2,7 @@
 			    "hunspell"
 			    "hunspell-dict-en-au"
 			    "sqlite"
+                            "inkscape"
 
                             ;; emacs packages
                             ;;
@@ -57,6 +58,15 @@
                             "texlive-vancouver"
                             "texlive-lastpage"
                             "texlive-standalone"
+                            "texlive-multirow"
+                            "texlive-emptypage"
+                            "texlive-layouts"
+                            "texlive-natbib"
+                            "texlive-epstopdf"
+                            "texlive-svg"
+                            "texlive-trimspaces"
+                            "texlive-transparent"
+                            "texlive-catchfile"
 
                             ;; python
                             ;;
