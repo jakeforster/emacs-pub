@@ -6,7 +6,7 @@
 (menu-bar-mode -1)
 (setq visible-bell t)
 (setq ring-bell-function 'ignore)
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(keymap-global-set "<escape>" 'keyboard-escape-quit)
 (blink-cursor-mode -1)
 (setq native-comp-async-report-warnings-errors 'silent)
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -30,8 +30,8 @@
 
 (add-to-list 'default-frame-alist `(font . ,(concat jf/font "-13")))
 
-(global-set-key (kbd "C--") 'text-scale-decrease)
-(global-set-key (kbd "C-=") 'text-scale-increase)
+(keymap-global-set "C--" 'text-scale-decrease)
+(keymap-global-set "C-=" 'text-scale-increase)
 
 (load-theme 'modus-operandi)
 
@@ -63,6 +63,13 @@
 
 (setq delete-by-moving-to-trash t
       trash-directory "~/.local/share/Trash/files/")
+
+;; backward-kill-word without yanking
+(defun jf/delete-word-backward ()
+  (interactive)
+  (delete-region (point) (progn (backward-word 1) (point))))
+
+(define-key minibuffer-local-map [C-backspace] 'jf/delete-word-backward)
 
 ;; if gpg-agent is providing ssh-agent on Guix System
 ;; ensure SSH_AUTH_SOCK is set for the gpg-agent
@@ -314,6 +321,8 @@
     :config
     (setq vterm-max-scrollback 10000)
 
+    (setq vterm-min-window-width 70)
+
     (evil-collection-define-key 'normal 'vterm-mode-map
       (kbd "M-w") #'kill-ring-save
       (kbd "SPC k") 'jf/kill-vterm-buffer)
@@ -491,7 +500,11 @@
     (kbd "SPC k") 'jf/kill-magit-buffers)
   
   (setq magit-diff-hide-trailing-cr-characters t
-        transient-default-level 5))
+        transient-default-level 5)
+
+  (require 'jf-guix)
+  (when (and jf/is-guix-system (jf/guix-gpg-agent-providing-ssh-agent-p))
+    (add-hook 'magit-status-sections-hook #'jf/guix-gpg-agent-restart-maybe)))
 
 (cl-assert (executable-find "black"))
 (use-package python-black
