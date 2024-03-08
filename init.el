@@ -46,7 +46,8 @@
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; dired
-(unless (eq system-type 'berkeley-unix)
+(if (eq system-type 'berkeley-unix)
+    (setq dired-use-ls-dired nil)
   (setq dired-listing-switches "-agho --group-directories-first"))
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 
