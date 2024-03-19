@@ -44,7 +44,8 @@
 ;; disable line numbers for these modes
 (dolist (mode '(vterm-mode-hook
                 dired-mode-hook
-                pdf-view-mode-hook))
+                pdf-view-mode-hook
+                org-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; dired
@@ -72,7 +73,7 @@
   (interactive)
   (delete-region (point) (progn (backward-word 1) (point))))
 
-(define-key minibuffer-local-map [C-backspace] 'jf/delete-word-backward)
+(keymap-set minibuffer-local-map "C-<backspace>" 'jf/delete-word-backward)
 
 ;; if gpg-agent is providing ssh-agent on Guix System
 ;; ensure SSH_AUTH_SOCK is set for the gpg-agent
@@ -322,12 +323,11 @@
   (use-package vterm
     :defer t
     :config
-    (setq vterm-max-scrollback 10000)
-
-    (setq vterm-min-window-width 70)
+    (setq vterm-max-scrollback 10000
+          vterm-min-window-width 70
+          vterm-buffer-name-string "vterm %s")
 
     (evil-collection-define-key 'normal 'vterm-mode-map
-      (kbd "M-w") #'kill-ring-save
       (kbd "SPC k") 'jf/kill-vterm-buffer)
 
     ;; fix cursor position after evil insert and append 
@@ -340,12 +340,13 @@
     (advice-add #'boon-insert :before #'+vterm-update-cursor-boon)
 
     (defun jf/kill-vterm-buffer ()
-      "Kill the current 'vterm' buffer without confirmation if it's the active buffer."
+      "Kill the current 'vterm' buffer without confirmation."
       (interactive)
       (when (string-prefix-p "vterm" (buffer-name))
 	(let ((kill-buffer-query-functions nil)) 
 	  (kill-buffer (current-buffer)))))))
 
+(cl-assert (executable-find "latexmk"))
 (use-package org
   :defer t
   :hook (org-mode . jf/org-mode-setup)
@@ -355,7 +356,8 @@
     (require 'diminish)
     (diminish 'org-indent-mode)
     (flyspell-buffer)
-    (flyspell-mode))
+    (flyspell-mode)
+    (visual-line-mode))
   
   (evil-collection-define-key 'normal 'org-mode-map
     (kbd "SPC e") 'org-babel-execute-src-block
@@ -379,6 +381,7 @@
      (python . t)
      (latex . t)
      (sqlite . t)))
+  (cl-assert (executable-find org-babel-sqlite3-command))
 
     (setq org-latex-pdf-process
         (if (eq system-type 'berkeley-unix)
@@ -406,8 +409,6 @@
   :config
   (add-to-list 'display-buffer-alist
 	       '("^\\*compilation\\*" . ((display-buffer-same-window))))
-
-  (jf/toggle-compilation-cleanup)
 
   (dolist (map '(latex-mode-map
                  c-mode-base-map
