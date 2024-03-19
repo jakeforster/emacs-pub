@@ -1,5 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
+(setq jf/gc-cons-threshold-default gc-cons-threshold)
+(setq gc-cons-threshold (* 10 1000 1000))
+
 (setq inhibit-startup-message t)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -536,3 +539,5 @@
 
   (add-hook 'eglot-managed-mode-hook 'jf/python-toggle-flycheck-with-eglot)
   (advice-add 'eglot-shutdown :after 'jf/python-toggle-flycheck-with-eglot))
+
+(setq gc-cons-threshold jf/gc-cons-threshold-default)
