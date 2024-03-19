@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (defun jf/compilation-cleanup (buffer msg)
   "Close the *compilation* buffer if compilation finished successfully."
   (when (and (buffer-live-p buffer)

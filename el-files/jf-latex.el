@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (defun jf/latex-generate-command ()
   "Generate the LaTeX compile command for the current buffer.
 

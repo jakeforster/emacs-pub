@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (defconst jf/is-guix-system (and (eq system-type 'gnu/linux)
                                  (require 'f)
                                  (string-equal (f-read "/etc/issue")
