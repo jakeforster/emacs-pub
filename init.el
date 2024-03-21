@@ -530,6 +530,7 @@
   (add-hook 'python-mode-hook 'jf/python-flycheck-setup))
 
 (use-package eglot
+  :defer t
   :config
   (defun jf/python-toggle-flycheck-with-eglot (&rest _args)
     (when (eq major-mode 'python-mode)
